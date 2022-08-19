@@ -253,21 +253,40 @@ accept = X.columns[boru_selector.support_].to_list()
 ```
 link for more [info](https://towardsdatascience.com/feature-selection-with-borutapy-f0ea84c9366)
 
+## Embedded Methods
+### 1. Embedded Random Forest
+[Bu](https://towardsdatascience.com/feature-selection-using-random-forest-26d7b747597f) embedded feature selection Random Forest algoritmdan foydalanadi. 
+<br>
+Random Forestda har bir daraxt barcha featurelarni yoku barcha kuzatuchilarni ko'rmasligi mumkin va bu overfitting bo'lishini kamaytiradi va de-koorelatsiya bo'lishini taminlaydi. 
+<br>
+Har bir nodeda data 2 ga bo'linadi. bir biriga o'xshash va bir biriga o'xshash bo'lmagan qismlarga.
+<br>
+Featurening muhimligi o'sha bo'laklarga qanchalik bog'liqligiga asoslanadi.
+
 ```python
+from sklearn.feature_selection import SelectFromModel
+from sklearn.ensemble import RandomForestClassifier
+embeded_rf_selector = SelectFromModel(RandomForestClassifier(n_estimators=100, random_state=42), max_features=6)
+embeded_rf_selector.fit(X, y)
+embeded_rf_feature = getFeature(embeded_rf_selector.get_support())
+embeded_rf_feature
+```
+
+### 2. Embedded LightGBM
+Bu embedded feature selection LGB algoritmdan foydalanadi.
+
+
+```python
+from lightgbm import LGBMClassifier
+from sklearn.feature_selection import SelectFromModel
+lgbc=LGBMClassifier(n_estimators=500, learning_rate=0.05,
+                    num_leaves=32, colsample_bytree=0.2,                                           
+                    reg_alpha=3, reg_lambda=1, min_split_gain=0.01,    
+                    min_child_weight=40)
+embeded_lgb_selector = SelectFromModel(lgbc, max_features=6)
+embeded_lgb_selector.fit(X, y)
+embeded_lgb_feature = getFeature(embeded_lgb_selector.get_support())
+embeded_lgb_feature
 ```
 
 
-```python
-```
-
-
-```python
-```
-
-
-```python
-```
-
-
-```python
-```
